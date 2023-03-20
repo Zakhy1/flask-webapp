@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="contact">
+    <form action="/contact" method="post" class="p-5 m-5">
+        {% for cat, msg in get_flashed_messages(True) %}
+        <h4 class="flash {{ cat }} text-center">{{ msg }}</h4>
+        {% endfor %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Ваше имя</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Иван">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Ваша электронная почта</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+            <label for="text" class="form-label">Сообщение</label>
+            <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Отправить</button>
+    </form>
+</section>
+{% endblock %}

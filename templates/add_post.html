@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="add-post">
+    <form action="{{ url_for('add_post') }}" method="post" class="p-5 m-5">
+        {% for cat, msg in get_flashed_messages(True) %}
+        <h4 class="flash {{ cat }} text-center">{{ msg }}</h4>
+        {% endfor %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Название поста</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="text" class="form-label">Текст поста</label>
+            <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Отправить</button>
+    </form>
+</section>
+
+{% endblock %}

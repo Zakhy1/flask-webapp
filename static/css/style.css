@@ -1,0 +1,38 @@
+/*Основа*/
+:root {
+    --black-blue: #0E3761;
+    --light-blue: #6EB4FA;
+    --blue: #1F80E0;
+    --gray: #AEBECF;
+    --dark-blue: #1863AD;
+}
+
+body {
+    background-color: #eeeeee;
+}
+
+/*Форма обратной связи*/
+
+form {
+    border: 3px var(--blue) solid;
+    border-radius: 15px;
+}
+.flash.success{
+
+    color: #198754;
+    border: 2px #177348 solid;
+    border-radius: 15px;
+}
+.flash.error{
+    color: #dc3545;
+    border: 2px #b12937 solid;
+    border-radius: 15px;
+}
+.login {
+    padding: 100px;
+}
+.login form {
+    padding: 50px;
+    width: 900px;
+    margin: 0 auto;
+}
