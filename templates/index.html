@@ -2,5 +2,22 @@
 
 {% block content %}
 
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mt-5">Список статей</h2>
+            {% for post in posts %}
+            <div class="card mt-5">
+                <h5 class="card-header fs-4">{{ post.time }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title fs-3">{{ post.title }}</h5>
+                    <p class="card-text fs-4">{{ post.text[:150] | striptags }}</p>
+                    <a href="{{ url_for('show_post', alias=post.url) }}" class="btn btn-primary fs-4">Читать далее</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

@@ -2,6 +2,8 @@ import math
 import sqlite3
 import time
 
+from flask import url_for
+
 
 class FDataBase:
     def __init__(self, db):
@@ -19,19 +21,26 @@ class FDataBase:
             print("Ошибка получения меню", e)
         return []
 
-    def addPost(self, title, text):
+    def addPost(self, title, text, url):
         try:
-            tm = math.floor(time.time())
-            self.__cur.execute("INSERT INTO posts VALUES(NULL, ?, ?, ?)", (title, text, tm))
+            self.__cur.execute(f"SELECT COUNT() AS `count` FROM posts WHERE url like '{url}'")
+            res = self.__cur.fetchone()
+            if res["count"] > 0:
+                print("Статья с таким url уже существует")
+                return False
+
+            unix_time = time.time()
+            human_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(unix_time))
+            self.__cur.execute("INSERT INTO posts VALUES(NULL, ?, ?, ?, ?)", (title, text, url, human_time))
             self.__db.commit()
         except sqlite3.Error as e:
-            print("Ошибка добавления в БВ", e)
+            print("Ошибка добавления в БД", e)
             return False
         return True
 
-    def getPost(self, post_id):
+    def getPost(self, alias):
         try:
-            self.__cur.execute(f"SELECT title, text FROM posts WHERE id = {post_id} LIMIT 1")
+            self.__cur.execute(f"SELECT title, text FROM posts WHERE url like '{alias}' LIMIT 1")
             res = self.__cur.fetchone()
             if res:
                 return res
@@ -42,7 +51,7 @@ class FDataBase:
 
     def getPostsAnonce(self):
         try:
-            self.__cur.execute(f"SELECT id, title, text FROM posts ORDER BY time DESC")
+            self.__cur.execute(f"SELECT id, title, text, time, url FROM posts ORDER BY time DESC")
             res = self.__cur.fetchall()
             if res:
                 return res

@@ -3,17 +3,15 @@
 {% block content %}
 
 <section class="post">
-    <div class="container m-4 p-4">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="text-center">{{title}}</h2>
-            </div>
-        </div>
-        <div class="col-12">
-            <p>{{ post }}</p>
+
+    <div class="card m-5">
+        <h5 class="card-header fs-3">{{ title }}</h5>
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text fs-4">{{ post }}</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary fs-3">Назад</a>
         </div>
     </div>
-
 
 </section>
 
