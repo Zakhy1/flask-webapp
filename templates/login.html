@@ -5,36 +5,31 @@
     {% for cat, msg in get_flashed_messages(True) %}
     <h4 class="flash {{ cat }} text-center">{{ msg }}</h4>
     {% endfor %}
-    <form action="" method="post" class="p-5">
+    <form action="" method="post" class="p-5" novalidate>
         {{ form.hidden_tag() }}
+
+        {% for field in form if field.name not in ["csrf_token", "remember", "submit"] %}
+
         <div class="mb-3">
-            {{ form.email.label(class="form-label") }}
-            {% if form.email.errors %}
-            {{ form.email(class="form-control is-invalid") }}
-            <div id="validationServer03Feedback" class="invalid-feedback">
-                {% for error in form.email.errors %}
-                {{ error }}
-                {% endfor %}
-            </div>
-            {% else %}
-            {{ form.email(class="form-control") }}
+            {{ field.label(class="form-label") }}
+            {% if field.errors %}
+                {{ field(class="form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for e in field.errors %}
+                    {{ e }}
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ field(class="form-control") }}
             {% endif %}
-            <!--            <label for="email" class="form-label">E-mail</label>-->
-            <!--            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>-->
         </div>
-        <div class="mb-3">
-            {{ form.password.label(class="form-label") }}
-            {{ form.password(class="form-control") }}
-            <!--            <label for="password" class="form-label">Пароль</label>-->
-            <!--            <input type="password" class="form-control" id="password" name="password" required>-->
+        {% endfor %}
+
+        {{ form.remember.label(class="form-label")}} {{ form.remember() }}
+        {{ form.submit(class="btn btn-primary ms  -3") }} <br>
+        <div class="mt-2">Нет аккаунта?
+            <a href="{{ url_for('register') }}">Регистрация</a>
         </div>
-        {{ form.remember.label() }}
-        {{ form.remember() }}
-        {{ form.submit() }}
-        <!--        <input type="checkbox" name="remainme" id="remain me"> Запомнить меня-->
-        <!--        <button type="submit" class="btn btn-primary">Войти</button>-->
-        <br>
-        Нет аккаунта? <a href="{{ url_for('register') }}">Регистрация</a>
     </form>
 </section>
 {% endblock %}

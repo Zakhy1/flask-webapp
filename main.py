@@ -3,7 +3,7 @@ import sqlite3
 
 from FDataBase import FDataBase
 from UserLogin import UserLogin
-from forms import LoginForm
+from forms import LoginForm, RegisterForm
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, g, request, flash, abort, session, url_for, redirect, make_response
@@ -131,21 +131,18 @@ def login():
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
-    if request.method == "POST":
-        if len(request.form["name"]) > 4 and len(request.form["email"]) > 4 \
-                and len(request.form["password"]) > 4 and request.form["password"] == request.form["password-repeat"]:
-            hash = generate_password_hash(request.form["password"])
-            res = dbase.addUser(request.form["name"], request.form["email"], hash)
-            if res:
-                flash("Вы успешно зарегистрированы", "success")
-                return redirect(url_for("login"))
-            else:
-                flash("Произошла ошибка", "error")
-                print("Ошибка при регистрации")
+    form = RegisterForm()
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data)
+        res = dbase.addUser(form.name.data, form.email.data, hashed_password)
+        if res:
+            flash("Вы успешно зарегистрированы", "success")
+            return redirect(url_for("login"))
         else:
-            flash("Неверно заполнены поля")
+            flash("Произошла ошибка", "error")
+            print("Ошибка при регистрации")
 
-    return render_template("register.html", menu=dbase.getMenu(), title="Регистрация")
+    return render_template("register.html", menu=dbase.getMenu(), title="Регистрация", form=form)
 
 
 @app.route("/logout")
