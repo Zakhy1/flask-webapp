@@ -11,6 +11,9 @@
             <p class="card-text fs-4">{{ post }}</p>
             <a href="{{ url_for('index') }}" class="btn btn-primary fs-3">Назад</a>
         </div>
+        <div class="card-footer text-muted">
+            Просмотров: {{ session['visits'] }}
+        </div>
     </div>
 
 </section>

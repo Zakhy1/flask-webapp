@@ -1,17 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <section class="login">
-        <form action="/login" method="post">
-            <div class="mb-3">
-                <label for="username" class="form-label">Имя</label>
-                <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Пароль</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Войти</button>
-        </form>
-    </section>
+<section class="login">
+    {% for cat, msg in get_flashed_messages(True) %}
+    <h4 class="flash {{ cat }} text-center">{{ msg }}</h4>
+    {% endfor %}
+    <form action="" method="post" class="p-5">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.email.label() }}
+            {{ form.email() }}
+            <!--            <label for="email" class="form-label">E-mail</label>-->
+            <!--            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>-->
+        </div>
+        <div class="mb-3">
+            {{ form.password.label() }}
+            {{ form.password() }}
+            <!--            <label for="password" class="form-label">Пароль</label>-->
+            <!--            <input type="password" class="form-control" id="password" name="password" required>-->
+        </div>
+        {{ form.remember.label() }}
+        {{ form.remember() }}
+        {{ form.submit() }}
+        <!--        <input type="checkbox" name="remainme" id="remain me"> Запомнить меня-->
+<!--        <button type="submit" class="btn btn-primary">Войти</button>-->
+        <br>
+        Нет аккаунта? <a href="{{ url_for('register') }}">Регистрация</a>
+    </form>
+</section>
 {% endblock %}

@@ -59,3 +59,59 @@ class FDataBase:
             print("Ошибка получения поста из БД", e)
 
         return []
+
+    def addUser(self, name, email, hashed_password):
+        try:
+            self.__cur.execute(f"SELECT COUNT() as `count` FROM users WHERE email LIKE '{email}'")
+            res = self.__cur.fetchone()
+            if res["count"] > 0:
+                print("Пользователь с такой почтой уже существует")
+                return False
+
+            unix_time = time.time()
+            human_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.localtime(unix_time))
+            self.__cur.execute("INSERT INTO users VALUES(NULL, ?, ?, ?, NULL, ? )",
+                               (name, email, hashed_password, human_time))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка добавления пользователя", str(e))
+            return False
+
+        return True
+
+    def getUser(self, user_id):
+        try:
+            self.__cur.execute(f"SELECT * FROM users WHERE id = {user_id} LIMIT 1")
+            res = self.__cur.fetchone()
+            if not res:
+                print("пользователь не найден")
+                return False
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД", str(e))
+        return False
+
+    def getUserByEmail(self, email):
+        try:
+            self.__cur.execute(f"SELECT * FROM users WHERE email = '{email}' LIMIT 1")
+            res = self.__cur.fetchone()
+            if not res:
+                print("пользователь не найден")
+                return False
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД", str(e))
+        return False
+
+    def updateUserAvatar(self, avatar, user_id):
+        if not avatar:
+            return False
+
+        try:
+            binary = sqlite3.Binary(avatar)
+            self.__cur.execute(f"UPDATE users SET avatar = ? WHERE id = ?", (binary, user_id))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка обновления аватара", str(e))
+            return False
+        return True

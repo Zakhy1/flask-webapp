@@ -11,8 +11,11 @@
                 <h5 class="card-header fs-4">{{ post.time }}</h5>
                 <div class="card-body">
                     <h5 class="card-title fs-3">{{ post.title }}</h5>
-                    <p class="card-text fs-4">{{ post.text[:150] | striptags }}</p>
+                    <p class="card-text fs-4">{{ post.text | striptags | truncate(50) }}</p>
                     <a href="{{ url_for('show_post', alias=post.url) }}" class="btn btn-primary fs-4">Читать далее</a>
+                </div>
+                <div class="card-footer text-muted">
+                    Просмотров: {{ session['visits'] }}
                 </div>
             </div>
             {% endfor %}

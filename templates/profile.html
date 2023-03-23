@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<section class="profile">
+    {% for cat, msg in get_flashed_messages(True) %}
+    <h4 class="flash {{ cat }} text-center mt-5">{{ msg }}</h4>
+    {% endfor %}
+    <div class="row g-3">
+
+        <form class="p-5" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <img src="{{ url_for('userava') }}" class="text-center w-25 img-thumbnail" class="w-25" alt="Profile photo">
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="file" name="file">
+                <label class="input-group-text" for="file"></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Загрузить</button>
+        </form>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="name" value="{{ current_user.getName() }}">
+        </div>
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail4" value="{{ current_user.getEmail() }}">
+        </div>
+        <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword4">
+        </div>
+        <div class="col-12">
+
+        </div>
+        ID :{{ current_user.get_id() }}
+    </div>
+    <a href="{{ url_for('logout') }}" class="btn btn-primary mt-5">Выйти</a>
+</section>
+
+{% endblock %}

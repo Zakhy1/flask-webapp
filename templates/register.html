@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="register">
+    {% for cat, msg in get_flashed_messages(True) %}
+        <h4 class="flash {{ cat }} text-center mt-5">{{ msg }}</h4>
+        {% endfor %}
+    <form action="/register" method="post" class="m-5 p-5">
+        <div class="mb-3">
+            <label for="name" class="form-label">Ваше имя</label>
+            <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Пароль</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Повтор пароля</label>
+            <input type="password" class="form-control" id="password-repeat" name="password-repeat" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    </form>
+</section>
+
+{% endblock %}
